@@ -1,0 +1,45 @@
+{
+  "resumo_abstrativo": "A lei institui um auxílio financeiro permanente no valor de um salário mínimo para mães ou responsáveis legais de pessoas com autismo, deficiência ou doença rara que exija cuidados em tempo integral. Para ser elegível, a família deve ter renda de até dois salários mínimos. A concessão do benefício, que é independente de outros auxílios, depende de laudo médico e implica em acompanhamento social anual realizado pelos sistemas de saúde e assistência social.",
+  "justificativa_resumida": "A proposta visa amparar mães e responsáveis que cuidam de pessoas com necessidades especiais, reconhecendo os desafios financeiros e emocionais que enfrentam. Muitas vezes, essas cuidadoras precisam abandonar seus empregos, resultando em vulnerabilidade econômica. O auxílio financeiro busca garantir condições dignas de desenvolvimento e inclusão para os assistidos, cobrindo despesas essenciais com moradia, alimentação e tratamentos, sendo uma medida de equidade e respeito aos direitos humanos.",
+  "evidencias": [
+    {
+      "ponto_resumo": "Instituição de auxílio financeiro no valor de um salário mínimo.",
+      "citacao_original": "Art. 1º Fica instituído auxílio financeiro para mães atípicas ou responsáveis legais atípicos, no valor de 1 (um) salário mínimo."
+    },
+    {
+      "ponto_resumo": "Definição do critério de renda familiar para elegibilidade.",
+      "citacao_original": "Art. 2º Para ter direito ao auxílio de que trata esta Lei, a mãe atípica ou o responsável legal atípico deverá comprovar renda familiar de até 2 (dois) salários-mínimos."
+    },
+    {
+      "ponto_resumo": "Exigência de laudo médico para comprovação da necessidade de cuidados integrais.",
+      "citacao_original": "§ 2º O auxílio será concedido conforme laudo médico que comprove o nível de autismo, da deficiência ou da doença rara do assistido que justifique a necessidade dos cuidados em tempo integral pela mãe ou pelo responsável legal."
+    },
+    {
+      "ponto_resumo": "Caráter permanente do auxílio enquanto durar a necessidade de cuidado.",
+      "citacao_original": "Art. 4º O auxílio de que trata esta Lei é de duração permanente, enquanto a mãe atípica ou o responsável legal atípico estiver cuidando do assistido."
+    },
+    {
+      "ponto_resumo": "Obrigatoriedade de acompanhamento social e relatório anual.",
+      "citacao_original": "Art. 5º A concessão do auxílio de que trata esta Lei implica acompanhamento social e elaboração, a cada 12 (doze) meses, ... de relatório emitido pelo sistema de saúde em parceria com a assistência social sobre o andamento e a evolução do tratamento do assistido durante o período."
+    }
+  ],
+  "impacto_orcamentario": "Cria Despesa",
+  "areas_tematicas": [
+    "Assistência Social",
+    "Saúde",
+    "Direitos Humanos",
+    "Finanças"
+  ],
+  "publico_alvo": [
+    "Mulheres",
+    "Pessoas com Deficiência",
+    "População de Baixa Renda",
+    "Crianças e Adolescentes"
+  ],
+  "verbo_acao": "Instituição",
+  "entidades_envolvidas": [
+    "Sistema de saúde",
+    "Assistência social"
+  ],
+  "prazo_vigencia": "Entra em vigor na data de sua publicação"
+}
