@@ -4,6 +4,8 @@ from io import StringIO
 
 import google.generativeai as genai
 
+# Comentário de teste
+
 # Importações necessárias para ler PDFs
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
