@@ -4,26 +4,26 @@
 graph
     Camara@{ shape: lin-cyl, label: "<pre>camarapoa.rs.gov.br</pre>" }
     CronJob@{ shape: event, label: "Cron Job" }
-    PLs@{ shape: docs, label: "<pre>PL[]</pre>" }
+    ListaProjetos@{ shape: docs, label: "<pre>Projeto[]</pre>" }
     DB@{ shape: db, label: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Database &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }
-    PL@{ shape: doc, label: "<pre>PL</pre>" }
+    Projeto@{ shape: doc, label: "<pre>Projeto</pre>" }
     PDF@{ shape: lin-doc, label: "<pre>Projeto.pdf</pre>" }
-    SimplificacaoPL@{ shape: doc, label: "<pre>SimplificacaoPL</pre>" }
+    AnaliseIA@{ shape: doc, label: "<pre>AnaliseIA</pre>" }
     PaginaListagem@{ shape: div-rect, label: "Página de Listagem" }
     FrontDetalhes@{ shape: div-rect, label: "Página de Detalhes" }
 
     Camara --> Scraper
     CronJob e1@--- Scraper
-    Scraper --> PLs
-    PLs <--> DB
-    PLs -------> PaginaListagem
-    DB --> PL
-    PL --> PDF
-    PL --> FrontDetalhes
+    Scraper --> ListaProjetos
+    ListaProjetos <--> DB
+    ListaProjetos -------> PaginaListagem
+    DB --> Projeto
+    Projeto --> PDF
+    Projeto --> FrontDetalhes
     PDF --> Simplificador
-    Simplificador --> SimplificacaoPL
-    SimplificacaoPL --> DB
-    SimplificacaoPL --> FrontDetalhes
+    Simplificador --> AnaliseIA
+    AnaliseIA --> DB
+    AnaliseIA --> FrontDetalhes
 
     e1@{ animate: true }
     classDef text-sm font-size:0.875rem
@@ -44,12 +44,12 @@ classDiagram
         URBANISMO_INFRAESTRUTURA
         MEIO_AMBIENTE
         CAUSA_ANIMAL
-        ASSISTENCIA_SOCIAL_DIREITOS
+        ASSISTENCIA_SOCIAL
         CULTURA_TURISMO
         ESPORTE_LAZER
         ECONOMIA_FINANCAS
         ADMINISTRACAO_PUBLICA
-        HOMENAGENS_FESTIVIDADES
+        HOMENAGENS
         OUTROS
     }
 
@@ -62,27 +62,27 @@ classDiagram
         PELO
     }
 
-    class CategoriaComReferencias {
-        +nome: Categoria
-        +referencias: list[str]
+    class Classificacao {
+        +categoria: Categoria
+        +fontes: list[str]
     }
 
-    class TextoComReferencias {
+    class PontoAnalise {
         +texto: str
-        +referencias: list[str]
+        +fontes: list[str]
     }
 
-    class SimplificacaoPL {
-        +modelo_ia: str
+    class AnaliseIA {
+        +modelo: str
         +titulo: str
         +resumo: str
-        +mudancas: list[TextoComReferencias]
-        +justificativas: list[TextoComReferencias]
-        +categorias: list[CategoriaComReferencias]
+        +mudancas: list[PontoAnalise]
+        +justificativas: list[PontoAnalise]
+        +classificacao: list[Classificacao]
     }
 
-    class Documento {
-        +nome: str
+    class Anexo {
+        +titulo: str
         +url: HttpUrl
     }
 
@@ -90,30 +90,51 @@ classDiagram
         +nome: str
         +slug: str | None
         +partido: str | None
-        +url_imagem: HttpUrl | None
+        +foto_url: HttpUrl | None
     }
 
-    class PL {
-        +id_url: int
-        +id_processo: str
-        +id_pl: str
-        +tipo: TipoProjeto
+    class Votacao {
+        +data: date
         +titulo: str
+        +votos_sim: int
+        +votos_nao: int
+        +abstencoes: int
+        +resultado: str
+        +detalhes_url: HttpUrl
+    }
+
+    class Tramitacao {
+        +setor: str
+        +data_chegada: date
+        +data_saida: date
+        +situacao: str
+    }
+
+    class Projeto {
+        +id_externo: int
+        +numero_processo: str
+        +numero_projeto: str
+        +tipo: TipoProjeto
+        +ementa: str
         +autores: list[Autor]
         +data_abertura: date
-        +data_ultima_tramitacao: date
-        +situacao: str
+        +data_ultima_tramitacao: datetime
         +localizacao_atual: str
+        +situacao_tramitacao: str
         +situacao_plenaria: str | None
-        +simplificacao: SimplificacaoPL | None
-        +documentos: list[Documento]
+        +analise_ia: AnaliseIA | None
+        +anexos: list[Anexo]
+        +votacoes: list[Votacao]
+        +tramitacoes: list[Tramitacao]
     }
 
-    CategoriaComReferencias ..> Categoria : usa
-    SimplificacaoPL *-- CategoriaComReferencias : contém
-    SimplificacaoPL *-- TextoComReferencias : contém
-    PL *-- SimplificacaoPL : contém
-    PL *-- Documento : contém
-    PL *-- Autor : contém
-    PL ..> TipoProjeto : usa
+    Classificacao ..> Categoria : usa
+    AnaliseIA *-- Classificacao : contém
+    AnaliseIA *-- PontoAnalise : contém
+    Projeto *-- AnaliseIA : contém
+    Projeto *-- Anexo : contém
+    Projeto *-- Autor : contém
+    Projeto *-- Votacao : contém
+    Projeto *-- Tramitacao : contém
+    Projeto ..> TipoProjeto : usa
 ```

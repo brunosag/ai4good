@@ -1,39 +1,104 @@
-from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, datetime
+from enum import StrEnum
+
+from pydantic import BaseModel, Field, HttpUrl
 
 
-@dataclass
-class DocumentoAnexo:
+class Categoria(StrEnum):
+    SAUDE = 'Saúde'
+    EDUCACAO = 'Educação'
+    SEGURANCA = 'Segurança'
+    TRANSPORTE_MOBILIDADE = 'Transporte e Mobilidade'
+    URBANISMO_INFRAESTRUTURA = 'Urbanismo e Infraestrutura'
+    MEIO_AMBIENTE = 'Meio Ambiente'
+    CAUSA_ANIMAL = 'Causa Animal'
+    ASSISTENCIA_SOCIAL = 'Assistência Social e Direitos Humanos'
+    CULTURA_TURISMO = 'Cultura e Turismo'
+    ESPORTE_LAZER = 'Esporte e Lazer'
+    ECONOMIA_FINANCAS = 'Economia e Finanças'
+    ADMINISTRACAO_PUBLICA = 'Administração Pública'
+    HOMENAGENS = 'Homenagens e Festividades'
+    OUTROS = 'Outros'
+
+
+class TipoProjeto(StrEnum):
+    PLL = 'PLL'  # Projeto de Lei do Legislativo
+    PLE = 'PLE'  # Projeto de Lei do Executivo
+    PLCL = 'PLCL'  # Projeto de Lei Complementar do Legislativo
+    PLCE = 'PLCE'  # Projeto de Lei Complementar do Executivo
+    PELO = 'PELO'  # Proposta de Emenda à Lei Orgânica
+
+
+class Classificacao(BaseModel):
+    categoria: Categoria
+    fontes: list[str] = Field(min_length=1)
+
+
+class PontoAnalise(BaseModel):
+    texto: str
+    fontes: list[str] = Field(min_length=1)
+
+
+class AnaliseIA(BaseModel):
+    modelo: str
     titulo: str
-    url: str
+    resumo: str
+    mudancas: list[PontoAnalise] = Field(min_length=1)
+    justificativas: list[PontoAnalise] = Field(min_length=1)
+    classificacao: list[Classificacao] = Field(min_length=1)
 
 
-@dataclass
-class Vereador:
-    slug: str  # Ex: 'grazi-oliveira'
-    nome: str  # Ex: 'Grazi Oliveira'
-    partido: str  # Ex: 'PSOL'
+class Autor(BaseModel):
+    nome: str
+    slug: str | None = None
+    partido: str | None = None
+    foto_url: HttpUrl | None = None
 
 
-@dataclass
-class ProjetoLei:
-    id_url: int  # Ex: 140595
-    id_processo: str  # Ex: '00005/25'
-    id_pl: str  # Ex: 'PLL 001/25'
-    titulo: str  # Ex: 'Institui auxílio financeiro para mães...'
-    autores: list[Vereador]
+class Anexo(BaseModel):
+    titulo: str
+    url: HttpUrl
+
+
+class Votacao(BaseModel):
+    data: date
+    titulo: str
+    votos_sim: int | None
+    votos_nao: int | None
+    abstencoes: int | None
+    resultado: str
+    detalhes_url: HttpUrl | None
+
+
+class Tramitacao(BaseModel):
+    setor: str
+    data_chegada: date
+    data_saida: date | None = None
+    situacao: str
+
+
+class Projeto(BaseModel):
+    id_externo: int = Field(
+        gt=0,
+        description='ID numérico da URL (.../processos/{id})',
+    )
+    numero_processo: str = Field(
+        pattern=r'^\d{5}/\d{2}$',
+        description='Número identificador do processo (ex: 00738/25)',
+    )
+    numero_projeto: str = Field(
+        pattern=r'^\d+/\d{2}$',
+        description='Número do projeto (ex: 314/25) sem a sigla do tipo',
+    )
+    tipo: TipoProjeto
+    ementa: str
+    autores: list[Autor] = Field(min_length=1)
     data_abertura: date
-    data_ultima_tramitacao: date
-    situacao: str  # Ex: 'PARA PARECER'
-    situacao_plenaria: str  # Ex: 'EM TRAMITACAO'
-    localizacao_atual: str  # Ex: 'ARQ - SETOR DE ARQUIVO'
-    documentos: list[DocumentoAnexo] = field(default_factory=list)
-    texto_original: str | None = None
-
-
-@dataclass
-class SimplificacaoPL:
-    id_url_pl: int  # Ex: 140595
-    titulo: str  # Ex: 'Criação de auxílio financeiro para mães...'
-    resumo: str  # Ex: ''
-    justificativa: str  # Ex: ''
+    data_ultima_tramitacao: datetime
+    localizacao_atual: str
+    situacao_tramitacao: str
+    situacao_plenaria: str | None = None
+    analise_ia: AnaliseIA | None = None
+    anexos: list[Anexo] = Field(default_factory=list)
+    votacoes: list[Votacao] = Field(default_factory=list)
+    tramitacoes: list[Tramitacao] = Field(default_factory=list)
